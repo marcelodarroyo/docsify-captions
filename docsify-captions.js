@@ -1,4 +1,5 @@
 
+
 // Simple docsify plugin to format captions for images, tables and listings
 // You can write captions below of images, tables or code blocks:
 //      <keyword> n: caption text.
@@ -33,9 +34,11 @@
             const options = {...defaultOptions, ...userOptions};
             const keywords = options[options.language];
             let pattern = new RegExp(`^ *(${keywords}) ([0-9]+): *(.*)$`, 'i');
-            let elements = document.querySelectorAll('table, figure, pre, p>img');
+            let elements = document.querySelectorAll('table, figure, pre, p');
             for (let e of elements) {
-                if (e.tagName == 'IMG') e = e.parentElement;
+                const media = ['IMG', 'VIDEO', 'AUDIO'];
+                if (e.tagName == 'P' && !media.includes(e.firstChild.tagName))
+                    continue;
                 let caption = e.nextElementSibling;
                 if (caption && caption.tagName == 'P') {
                     let match = caption.innerText.match(pattern);
