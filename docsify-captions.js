@@ -35,6 +35,7 @@
             let pattern = new RegExp(`^ *(${keywords}) ([0-9]+): *(.*)$`, 'i');
             let elements = document.querySelectorAll('table, figure, pre, p>img');
             for (let e of elements) {
+                if (e.tagName == 'IMG') e = e.parentElement;
                 let caption = e.nextElementSibling;
                 if (caption && caption.tagName == 'P') {
                     let match = caption.innerText.match(pattern);
