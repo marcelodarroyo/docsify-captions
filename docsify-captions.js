@@ -45,8 +45,10 @@
                     let match = caption.innerText.match(pattern);
                     if (match) {
                         e.id = match[1] + '-' + match[2];
-                        caption.innerHTML = `<b>${match[1]} ${match[2]}</b>: ` + 
-                                            `<em>${match[3]}</em>`;
+                        caption.innerHTML = '<b class="caption-id">' + 
+                                            `${match[1]} ${match[2]}</b>: ` + 
+                                            '<em class="caption-text">' + 
+                                            `${match[3]}</em>`;
                         caption.classList.add('caption');
                     }
                 }
