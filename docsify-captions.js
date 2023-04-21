@@ -9,13 +9,18 @@
 //      window.$docsify = {
 //          ...
 //          captions: {
-//              keywords: 'Tabla|Figura|Listado', // spanish keywords
+//              language: 'en',
+//              'en': 'Table|Figure|Listing|Demo|Audio|Video',
+//              'es-AR': 'Tabla|Figura|Listado|Demo|Audio|Video'
 //          }
 //      }
 //
 // Captions are formatted: left part in bold, text in italics.
 // Identifiers (<keyword-n>) are added to figures, tables and code blocks for
 // referencing.
+//
+// It support for adding asciinema demos. HTML content should be enclosed in a 
+// <div id="demo-id" class="asciinema"></div>. See https://asciinema.org/
 // 
 // Author: Marcelo Arroyo
 
@@ -26,17 +31,19 @@
         hook.doneEach(function () {
             const defaultOptions = {
                 language: 'en',
-                'en': 'Table|Figure|Listing',
-                'es-AR': 'Tabla|Figura|Listado'
+                'en': 'Table|Figure|Listing|Demo|Audio|Video',
+                'es-AR': 'Tabla|Figura|Listado|Demo|Audio|Video'
             };
             const userOptions = $docsify.captions || {};
             const options = {...defaultOptions, ...userOptions};
             const keywords = options[options.language];
             let pattern = new RegExp(`^ *(${keywords}) ([0-9]+): *(.*)$`, 'i');
-            let elements = document.querySelectorAll('table, figure, pre, p');
+            const selector = 'table, figure, pre, p, .asciinema';
+            let elements = document.querySelectorAll(selector);
             const media = ['IMG', 'VIDEO', 'AUDIO'];
             for (let e of elements) {
                 if (e.tagName == 'P' && e.childNodes.length == 1) {
+                    // ignore paragraphs with no media tag inside
                     if (!media.includes(e.firstChild.tagName))
                         continue;
                 }
@@ -44,7 +51,8 @@
                 if (caption && caption.tagName == 'P') {
                     let match = caption.innerText.match(pattern);
                     if (match) {
-                        e.id = match[1] + '-' + match[2];
+                        if (!e.id)
+                            e.id = match[1] + '-' + match[2];
                         caption.innerHTML = '<b class="caption-id">' + 
                                             `${match[1]} ${match[2]}</b>: ` + 
                                             '<em class="caption-text">' + 
