@@ -7,23 +7,24 @@ A paragraph below a image, table or code block with the format
 ```
 Markdown image, table or code block here
 
-Figure/Table/Listing n: Caption text here.
+<keyword> n: Caption text here.
 ```
 
+where `<keyword>` can be: Figure, Table, Listing, Demo, Audio or Video. 
 will be interpreted as a block caption.
 
 It add an id `<keyword-n>` to previus block. Also, the caption is formatted: left part in bold and the caption text enclosed with `<em>`, `</em>` tags.
 
 ## Configuration
 
-The keywords by default are `Figure`, `Table` and `Listing` but it can be configured for different languages as shown below:
+The keywords by default are english words but can be customized for different languages in plugin configuration as shown below
 
 ```
 window.$docsify {
   ...
   captions: {
     language: 'es-AR',
-    "es-AR": 'Figura|Tabla|Listado'
+    "es-AR": 'Figura|Tabla|Listado|Demo|Audio|Video'
   }
 }
 ```
